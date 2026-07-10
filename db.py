@@ -16,13 +16,26 @@ from contextlib import contextmanager
 
 BASE_DIR = Path(__file__).resolve().parent
 
-# Vercel's filesystem is read-only except /tmp. Detect a serverless
-# environment and write the sqlite file there instead, otherwise use
-# the project directory like before for local dev.
-if os.environ.get("VERCEL"):
-    DB_PATH = Path("/tmp") / "db.sqlite3"
-else:
-    DB_PATH = BASE_DIR / "db.sqlite3"
+
+def _pick_db_path() -> Path:
+    """
+    Prefer writing next to the code (local dev), but fall back to /tmp
+    whenever that's not writable — e.g. Vercel's serverless filesystem,
+    which is read-only outside of /tmp regardless of whether the VERCEL
+    system environment variable is exposed to the function.
+    """
+    candidate = BASE_DIR / "db.sqlite3"
+    if os.access(BASE_DIR, os.W_OK):
+        try:
+            with open(candidate, "a"):
+                pass
+            return candidate
+        except OSError:
+            pass
+    return Path("/tmp") / "db.sqlite3"
+
+
+DB_PATH = _pick_db_path()
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS skills (
@@ -138,4 +151,4 @@ def save_contact_message(name, email, subject, message):
             "INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)",
             (name, email, subject, message),
         )
-        return cur.lastrowid
+        return cur.lastrowid    
