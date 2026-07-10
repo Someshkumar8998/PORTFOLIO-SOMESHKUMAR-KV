@@ -441,3 +441,8 @@ def application(environ, start_response):
 
     start_response(response.status, response.headers)
     return [response.body]
+
+
+# Vercel's Python runtime loads app.py as the entrypoint (it's first in its
+# search order) and requires the WSGI callable to be exposed as `app`.
+app = application

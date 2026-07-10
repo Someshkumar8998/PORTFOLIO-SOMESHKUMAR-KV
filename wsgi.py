@@ -1,11 +1,10 @@
 """
-WSGI entry point for production servers (e.g. gunicorn).
-Usage: gunicorn wsgi:application
+WSGI entry point for production servers (e.g. gunicorn) and Vercel.
+Usage (gunicorn): gunicorn wsgi:application
+Vercel's Python runtime specifically looks for a variable named `app`.
 """
 
-from app import application  # noqa: F401
+from app import application
 
-# Vercel's @vercel/python WSGI runtime looks for a variable named `app` by
-# convention (Flask-style). Expose an alias so it's found regardless of
-# which name it expects.
+# Vercel requires the WSGI callable to be exposed as `app`
 app = application

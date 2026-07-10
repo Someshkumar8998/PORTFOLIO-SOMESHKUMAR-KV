@@ -9,12 +9,20 @@ If a table is empty, views.py falls back to the defaults in data.py,
 exactly like the original Django views did.
 """
 
+import os
 import sqlite3
 from pathlib import Path
 from contextlib import contextmanager
 
 BASE_DIR = Path(__file__).resolve().parent
-DB_PATH = BASE_DIR / "db.sqlite3"
+
+# Vercel's filesystem is read-only except /tmp. Detect a serverless
+# environment and write the sqlite file there instead, otherwise use
+# the project directory like before for local dev.
+if os.environ.get("VERCEL"):
+    DB_PATH = Path("/tmp") / "db.sqlite3"
+else:
+    DB_PATH = BASE_DIR / "db.sqlite3"
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS skills (

@@ -1,0 +1,70 @@
+warning: in the working copy of 'db.py', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/db.py b/db.py[m
+[1mindex 0da2921..70b2d2e 100644[m
+[1m--- a/db.py[m
+[1m+++ b/db.py[m
+[36m@@ -9,12 +9,21 @@[m [mIf a table is empty, views.py falls back to the defaults in data.py,[m
+ exactly like the original Django views did.[m
+ """[m
+ [m
+[32m+[m[32mimport os[m
+ import sqlite3[m
+ from pathlib import Path[m
+ from contextlib import contextmanager[m
+ [m
+ BASE_DIR = Path(__file__).resolve().parent[m
+[31m-DB_PATH = BASE_DIR / "db.sqlite3"[m
+[32m+[m
+[32m+[m[32m# On Vercel (and most serverless platforms) the deployed source tree is[m
+[32m+[m[32m# READ-ONLY — only /tmp is writable, and /tmp is wiped between cold starts.[m
+[32m+[m[32m# Writing db.sqlite3 next to the source code (BASE_DIR) works fine locally[m
+[32m+[m[32m# but crashes in production with "unable to open database file".[m
+[32m+[m[32mif os.environ.get("VERCEL") == "1":[m
+[32m+[m[32m    DB_PATH = Path("/tmp") / "db.sqlite3"[m
+[32m+[m[32melse:[m
+[32m+[m[32m    DB_PATH = BASE_DIR / "db.sqlite3"[m
+ [m
+ SCHEMA = """[m
+ CREATE TABLE IF NOT EXISTS skills ([m
+[36m@@ -86,14 +95,29 @@[m [mdef get_conn():[m
+ [m
+ [m
+ def init_db():[m
+[31m-    with get_conn() as conn:[m
+[31m-        conn.executescript(SCHEMA)[m
+[32m+[m[32m    """Create tables if missing. Never raises — if the DB is unavailable[m
+[32m+[m[32m    (e.g. unwritable filesystem), the app still runs using the static[m
+[32m+[m[32m    defaults in data.py instead of crashing on import."""[m
+[32m+[m[32m    try:[m
+[32m+[m[32m        with get_conn() as conn:[m
+[32m+[m[32m            conn.executescript(SCHEMA)[m
+[32m+[m[32m    except sqlite3.OperationalError as e:[m
+[32m+[m[32m        import logging[m
+[32m+[m[32m        logging.getLogger("portfolio").error([m
+[32m+[m[32m            "SQLite unavailable (%s) — falling back to data.py defaults for reads; "[m
+[32m+[m[32m            "contact form submissions will not be persisted.", e[m
+[32m+[m[32m        )[m
+ [m
+ [m
+ def _rows(table, order_by="sort_order, id"):[m
+[31m-    with get_conn() as conn:[m
+[31m-        cur = conn.execute(f"SELECT * FROM {table} ORDER BY {order_by}")[m
+[31m-        return [dict(r) for r in cur.fetchall()][m
+[32m+[m[32m    try:[m
+[32m+[m[32m        with get_conn() as conn:[m
+[32m+[m[32m            cur = conn.execute(f"SELECT * FROM {table} ORDER BY {order_by}")[m
+[32m+[m[32m            return [dict(r) for r in cur.fetchall()][m
+[32m+[m[32m    except sqlite3.OperationalError:[m
+[32m+[m[32m        # DB unavailable — caller (app.py) falls back to data.py defaults[m
+[32m+[m[32m        # whenever this returns an empty list.[m
+[32m+[m[32m        return [][m
+ [m
+ [m
+ def get_skills():[m
+[36m@@ -130,4 +154,4 @@[m [mdef save_contact_message(name, email, subject, message):[m
+             "INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)",[m
+             (name, email, subject, message),[m
+         )[m
+[31m-        return cur.lastrowid[m
+[32m+[m[32m        return cur.lastrowid[m
+\ No newline at end of file[m
