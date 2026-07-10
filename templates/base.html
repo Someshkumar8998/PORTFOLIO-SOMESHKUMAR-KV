@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ page_title }} | {{ profile.name }}</title>
+  <meta name="description" content="{{ profile.description }}" />
+  <link rel="icon" type="image/png" href="{{ static('assets/icons/favicon-32x32.png') }}" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="{{ static('css/style.css') }}" />
+  <link rel="stylesheet" href="{{ static('css/animations.css') }}" />
+  <link rel="stylesheet" href="{{ static('css/responsive.css') }}" />
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <header class="navbar" id="navbar">
+    <div class="navbar__inner">
+      <a href="{{ url('index') }}" class="navbar__logo">{{ profile.name|default("Someshkumar KV") }}</a>
+
+      <nav class="navbar__links" id="navLinks">
+        <a href="{{ url('index') }}" class="nav-link">Home</a>
+        <a href="{{ url('about') }}" class="nav-link">About</a>
+        <a href="{{ url('projects') }}" class="nav-link">Projects</a>
+        <a href="{{ url('services') }}" class="nav-link">Services</a>
+        <a href="{{ url('skills') }}" class="nav-link">Skills</a>
+        <a href="{{ url('experience') }}" class="nav-link">Experience</a>
+        <a href="{{ url('resume') }}" class="nav-link">Resume</a>
+        <a href="{{ url('contact') }}" class="nav-link nav-link--cta">Contact</a>
+      </nav>
+
+      <button class="navbar__toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    {% if messages %}
+      <div class="alerts">
+        {% for message in messages %}
+          <div class="alert alert--{{ message.tags }}">{{ message.text }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__brand">
+        <h3>{{ profile.name|default("Someshkumar KV") }}</h3>
+        <p>{{ profile.role_short }}</p>
+      </div>
+
+      <div class="site-footer__links">
+        <a href="{{ url('index') }}">Home</a>
+        <a href="{{ url('about') }}">About</a>
+        <a href="{{ url('projects') }}">Projects</a>
+        <a href="{{ url('contact') }}">Contact</a>
+      </div>
+
+      <div class="site-footer__socials">
+        {% for social in profile.socials %}
+          <a href="{{ social.href }}" target="_blank" rel="noopener noreferrer">{{ social.label }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <p class="site-footer__copy">&copy; {{ profile.name|default("Someshkumar KV") }}. Built with plain Python.</p>
+  </footer>
+
+  <script src="{{ static('js/main.js') }}"></script>
+  <script src="{{ static('js/animation.js') }}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

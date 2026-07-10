@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-header page-header--bg reveal">
+  <div class="page-header__inner">
+    <span class="eyebrow">Featured Projects</span>
+    <h1>Projects developed using Python, Django, React.js, Flask and MySQL.</h1>
+    <p class="lead">A showcase of my work including full-stack applications, ML systems, and web solutions.</p>
+  </div>
+</section>
+
+<!-- Portfolio Gallery Section -->
+<section class="section">
+  <div class="section__inner">
+    <div class="portfolio-gallery reveal">
+      <div class="gallery-grid">
+        <div class="gallery-item gallery-item--large">
+          <img src="{{ static('assets/images/medcare.png') }}" alt="MedCare Hub" loading="lazy" />
+          <div class="gallery-overlay">
+            <h3>MedCare Hub</h3>
+            <p>Django Healthcare System</p>
+          </div>
+        </div>
+        <div class="gallery-item gallery-item--medium">
+          <img src="{{ static('assets/images/github-analyzer.png') }}" alt="GitHub Analyzer" loading="lazy" />
+          <div class="gallery-overlay">
+            <h3>GitHub Analyzer</h3>
+            <p>React.js Dashboard</p>
+          </div>
+        </div>
+        <div class="gallery-item gallery-item--medium">
+          <img src="{{ static('assets/images/energy-forecast.png') }}" alt="Energy Forecasting" loading="lazy" />
+          <div class="gallery-overlay">
+            <h3>Energy Forecasting</h3>
+            <p>ML + IoT System</p>
+          </div>
+        </div>
+
+        <div class="gallery-item gallery-item--medium">
+          <img src="{{ static('assets/images/bug-tracker.png') }}" alt="Bug Tracker" loading="lazy" />
+          <div class="gallery-overlay">
+            <h3>Bug Tracker</h3>
+            <p>PHP Web App</p>
+          </div>
+        </div>
+        <div class="gallery-item gallery-item--medium">
+          <img src="{{ static('assets/images/restaurant-reservation.jpeg') }}" alt="Reservation System" loading="lazy" />
+          <div class="gallery-overlay">
+            <h3>Reservation System</h3>
+            <p>PHP + MySQL</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Detailed Projects Grid -->
+<section class="section section--alt">
+  <div class="section__inner">
+    <div class="section__heading reveal">
+      <span class="eyebrow">All Projects</span>
+      <h2>Complete Project Details</h2>
+    </div>
+
+    <div class="grid grid--projects">
+
+      {% for project in projects %}
+
+      <article class="card card--project reveal">
+
+        <div class="card--project__image">
+          {% if project.video %}
+            <video controls poster="{{ static('assets/images/' + project.image) }}" class="project-video">
+              <source src="{{ static('assets/videos/' + project.video) }}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          {% else %}
+            <img src="{{ static('assets/images/' + project.image) }}" alt="{{ project.title }}" loading="lazy">
+          {% endif %}
+        </div>
+
+        <div class="card--project__body">
+
+          <span class="tag">{{ project.project_type }}</span>
+
+          <h3>{{ project.title }}</h3>
+
+          <p class="muted">{{ project.subtitle }}</p>
+
+          <p>{{ project.description }}</p>
+
+          <div class="chip-row">
+            {% for tech in project.tech_list %}
+            <span class="chip">{{ tech }}</span>
+            {% endfor %}
+          </div>
+
+          <a href="{{ project.link }}" class="card-link" target="_blank">
+            View Project →
+          </a>
+
+        </div>
+
+      </article>
+
+      {% endfor %}
+
+    </div>
+
+  </div>
+</section>
+
+<!-- Portfolio Videos Showcase -->
+<section class="section">
+  <div class="section__inner">
+    <div class="section__heading reveal">
+      <span class="eyebrow">Showcase Videos</span>
+      <h2>See My Portfolio & Work in Action</h2>
+    </div>
+
+    <div class="videos-grid reveal">
+      <div class="video-item">
+        <div class="video-container">
+          <video controls width="100%" poster="{{ static('assets/images/about.webp') }}">
+            <source src="{{ static('assets/videos/about-me.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <h3>About Me Video</h3>
+        <p>Get to know me and my journey as a developer</p>
+      </div>
+
+      <div class="video-item">
+        <div class="video-container">
+          <video controls width="100%" poster="{{ static('assets/images/footer.png') }}">
+            <source src="{{ static('assets/videos/footer-video.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <h3>Portfolio Footer</h3>
+        <p>Portfolio design showcase and call-to-action</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

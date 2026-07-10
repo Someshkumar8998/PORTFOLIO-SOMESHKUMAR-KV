@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero">
+  <video class="hero__video" id="heroVideo" autoplay muted loop playsinline>
+    <source src="{{ static('assets/videos/about-me.mp4') }}" type="video/mp4">
+  </video>
+  <button type="button" class="hero__mute-toggle" id="muteToggle" aria-label="Unmute video">🔇</button>
+  <div class="hero__overlay"></div>
+  <div class="hero__inner reveal">
+    {% if profile.available %}
+      <span class="badge badge--pulse">{{ profile.badge_text }}</span>
+    {% endif %}
+
+    <h1 class="hero__title">
+      Hi, I'm <span class="accent">{{ profile.name }}</span>
+    </h1>
+    <p class="hero__subtitle">{{ profile.role_detailed }}</p>
+    <p class="hero__tagline">{{ profile.tagline }}</p>
+
+    <div class="hero__pills">
+      <span class="pill">Python</span>
+      <span class="pill">React.js</span>
+      <span class="pill">Flask</span>
+      <span class="pill">Django</span>
+    </div>
+
+    <div class="hero__cta">
+      <a href="{{ url('projects') }}" class="btn btn--primary">View My Work</a>
+      <a href="{{ url('contact') }}" class="btn btn--outline">Get In Touch</a>
+    </div>
+  </div>
+  <div class="scroll-indicator"><span></span></div>
+</section>
+
+<section class="stats reveal">
+  <div class="stats__inner">
+    {% for stat in profile.stats %}
+      <div class="stat-card">
+        <span class="stat-card__value">{{ stat.value }}</span>
+        <span class="stat-card__label">{{ stat.label }}</span>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="section__inner">
+    <div class="section__heading reveal">
+      <span class="eyebrow">Featured Projects</span>
+      <h2>Projects developed using Python, React.js, Flask, Django and MySQL.</h2>
+    </div>
+
+    <div class="grid grid--projects">
+      {% for project in projects %}
+        <article class="card card--project reveal">
+          <div class="card--project__image">
+            <img src="{{ static('assets/images/' + project.image) }}" alt="{{ project.title }}" loading="lazy" />
+          </div>
+          <div class="card--project__body">
+            <span class="tag">{{ project.project_type }}</span>
+            <h3>{{ project.title }}</h3>
+            <p>{{ project.subtitle }}</p>
+            {% if project.link %}
+              <a href="{{ project.link }}" target="_blank" rel="noopener noreferrer" class="card-link">View Project &rarr;</a>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+
+    <div class="section__cta reveal">
+      <a href="{{ url('projects') }}" class="btn btn--outline">See All Projects</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="section__inner">
+    <div class="section__heading reveal">
+      <span class="eyebrow">Toolkit</span>
+      <h2>Skills &amp; Technologies</h2>
+    </div>
+    <div class="skills-cloud reveal">
+      {% for skill in skills %}
+        <span class="skill-chip">{{ skill.name }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="cta-banner reveal">
+  <div class="cta-banner__inner">
+    <span class="eyebrow">Let's Work Together</span>
+    <h2>Building Modern Responsive Web Applications <span class="accent">with Python.</span></h2>
+    <a href="{{ url('contact') }}" class="btn btn--primary">Start a Conversation</a>
+  </div>
+</section>
+
+<script>
+  const heroVideo = document.getElementById('heroVideo');
+  const muteToggle = document.getElementById('muteToggle');
+  muteToggle.addEventListener('click', () => {
+    heroVideo.muted = !heroVideo.muted;
+    muteToggle.textContent = heroVideo.muted ? '🔇' : '🔊';
+    muteToggle.setAttribute('aria-label', heroVideo.muted ? 'Unmute video' : 'Mute video');
+  });
+</script>
+
+{% endblock %}

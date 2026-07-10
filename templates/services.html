@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-header services-header">
+  <span class="eyebrow">What I Offer</span>
+  <h1>Services</h1>
+  <p class="lead">
+    Building modern, scalable and responsive web applications
+    with clean code and elegant user experiences.
+  </p>
+</section>
+
+<section class="section services-section reveal">
+  <div class="section__inner">
+
+    <div class="grid grid--services">
+
+      {% for service in services %}
+      <div class="service-card reveal">
+
+        <div class="service-icon">
+          <i class="fas fa-{{ service.icon|default('code') }}"></i>
+        </div>
+
+        <h3>{{ service.title }}</h3>
+
+        <p>{{ service.description }}</p>
+
+      </div>
+
+      {% else %}
+
+      <div class="service-card">
+        <h3>No Services Available</h3>
+        <p>Please add services in the database.</p>
+      </div>
+
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+</section>
+
+<section class="cta-banner reveal">
+
+  <div class="cta-overlay"></div>
+
+  <div class="cta-banner__inner">
+
+    <span class="eyebrow">Let's Work Together</span>
+
+    <h2>
+      Have an idea?
+      <span class="accent">Let's turn it into reality.</span>
+    </h2>
+
+    <p>
+      I'm available for internships, freelance projects,
+      and full-stack development opportunities.
+    </p>
+
+    <a href="{{ url('contact') }}" class="btn btn--primary">
+      Get In Touch
+    </a>
+
+  </div>
+
+</section>
+
+{% endblock %}

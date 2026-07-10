@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-header page-header--bg resume-bg reveal">
+    <div class="page-header__inner">
+    <span class="eyebrow">Get To Know Me</span>
+    <h1>Resume</h1>
+    <p class="lead">
+      View my complete resume with skills, experience, and certifications.
+    </p>
+
+<a href="{{ url('download_resume') }}" class="btn btn--primary" download>
+  <i class="fas fa-download"></i>
+  Download PDF
+</a>
+
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="section__inner">
+
+    <div class="section__heading reveal">
+      <span class="eyebrow">Certifications</span>
+      <h2>Credentials</h2>
+    </div>
+
+    <div class="grid grid--certs reveal">
+      {% for cert in certifications %}
+        <div class="cert-card">
+          {{ cert.title }}
+        </div>
+      {% else %}
+        <p>No certifications available.</p>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="section__inner">
+
+    <div class="section__heading reveal">
+      <span class="eyebrow">Preview</span>
+      <h2>Resume Document</h2>
+    </div>
+
+    {% if resume_pdf_exists %}
+      <object data="{{ url('resume_pdf_view') }}"
+              type="application/pdf"
+              class="resume-embed reveal">
+        <p>
+          Your browser can't preview the PDF inline.
+          <a href="{{ url('download_resume') }}">Download the resume instead.</a>
+        </p>
+      </object>
+    {% else %}
+      <div class="reveal" style="padding: 2rem; text-align: center;">
+        <p>
+          Resume file not found on the server yet. Expected at:
+          <code>static/assets/pdf/resume.pdf</code>
+        </p>
+        <p>Add the file there and refresh this page.</p>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

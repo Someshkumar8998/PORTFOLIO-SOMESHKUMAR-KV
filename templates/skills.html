@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="skills-page">
+
+    <section class="page-header reveal">
+        <span class="eyebrow">TOOLKIT</span>
+        <h1>Skills &amp; Technologies</h1>
+        <p class="lead">
+            Technologies and tools I use to build modern web apps.
+        </p>
+    </section>
+
+    <section class="section">
+        <div class="section__inner">
+
+            <div class="skills-cloud reveal">
+
+                {% for skill in skills %}
+                    <span class="skill-chip">
+                        {{ skill.name }}
+                    </span>
+                {% else %}
+                    <p style="color:white;">No skills available.</p>
+                {% endfor %}
+
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="experience-page">
+
+<section class="page-header reveal">
+  <span class="eyebrow">Professional Journey</span>
+  <h1>My Experience</h1>
+  <p class="lead">A detailed look at my internships, roles, and professional growth.</p>
+</section>
+
+<section class="section">
+  <div class="section__inner">
+    <div class="section__heading reveal">
+      <span class="eyebrow">Work History</span>
+      <h2>Internships &amp; Roles</h2>
+    </div>
+
+    <div class="timeline reveal">
+      {% for exp in experience %}
+        <div class="timeline__item">
+          <div class="timeline__marker"></div>
+          <div class="timeline__content">
+            <span class="tag">{{ exp.period_start }} — {{ exp.period_end }}</span>
+            <h3>{{ exp.role }}</h3>
+            <p class="muted">{{ exp.company }} &middot; {{ exp.location }}</p>
+            <p>{{ exp.description }}</p>
+            <ul class="bullet-list">
+              {% for bullet in exp.bullet_list %}
+                <li>{{ bullet }}</li>
+              {% endfor %}
+            </ul>
+            <div class="chip-row">
+              {% for t in exp.tech_list %}
+                <span class="chip">{{ t }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+</div>
+
+{% endblock %}

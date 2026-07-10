@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-header reveal">
+    <span class="eyebrow">About Me</span>
+    <h1>Python Full Stack Developer passionate about
+        building scalable web applications.</h1>
+</section>
+
+<section class="about section">
+    <div class="section__inner">
+        <div class="about-grid">
+
+            <div class="about-grid__media reveal">
+                <img src="{{ static('assets/images/about.webp') }}" alt="{{ profile.name }}">
+            </div>
+
+            <div class="about-grid__content reveal">
+
+                <span class="eyebrow">ABOUT ME</span>
+
+                <h1>I'm {{ profile.name }}</h1>
+
+                <p class="lead">
+                    {{ profile.bio }}
+                </p>
+
+                <div class="about-info">
+
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <div>
+                            <small>BASED IN</small>
+                            <h4>{{ profile.based_in }}</h4>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">💼</div>
+                        <div>
+                            <small>AVAILABILITY</small>
+                            <h4>{{ profile.availability }}</h4>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">✉</div>
+                        <div>
+                            <small>EMAIL</small>
+                            <h4>{{ profile.email }}</h4>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">📞</div>
+                        <div>
+                            <small>PHONE</small>
+                            <h4>{{ profile.phone }}</h4>
+                        </div>
+                    </div>
+
+                </div>
+
+                <a href="{{ url('download_resume') }}"
+                   class="btn btn--primary"
+                   download>
+                    Download Resume
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

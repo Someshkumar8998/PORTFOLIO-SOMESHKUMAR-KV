@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-header reveal">
+  <span class="eyebrow">Get In Touch</span>
+  <h1>Feel free to connect for internships, full-time opportunities or collaborations.</h1>
+</section>
+
+<section class="section">
+  <div class="section__inner contact-grid">
+    <div class="contact-grid__info reveal">
+      <h3>Contact Details</h3>
+      <dl class="detail-list">
+        <div>
+          <dt>Email</dt>
+          <dd><a href="mailto:{{ profile.email }}">{{ profile.email }}</a></dd>
+        </div>
+        <div>
+          <dt>Phone</dt>
+          <dd>{{ profile.phone }}</dd>
+        </div>
+        <div>
+          <dt>Location</dt>
+          <dd>{{ profile.based_in }}</dd>
+        </div>
+      </dl>
+
+      <div class="chip-row">
+        {% for social in profile.socials %}
+          <a href="{{ social.href }}" target="_blank" rel="noopener noreferrer" class="chip chip--link">{{ social.label }}</a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <form method="post" class="contact-form reveal" id="contactForm" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+      <div class="form-group">
+        <label for="id_name">Name</label>
+        <input type="text" id="id_name" name="name" class="form-input"
+               placeholder="Your name" value="{{ form_data.name|default('') }}">
+        {% if form_errors.name %}
+          <p class="form-error">{{ form_errors.name }}</p>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="id_email">Email</label>
+        <input type="email" id="id_email" name="email" class="form-input"
+               placeholder="you@example.com" value="{{ form_data.email|default('') }}">
+        {% if form_errors.email %}
+          <p class="form-error">{{ form_errors.email }}</p>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="id_subject">Subject</label>
+        <input type="text" id="id_subject" name="subject" class="form-input"
+               placeholder="Subject (optional)" value="{{ form_data.subject|default('') }}">
+        {% if form_errors.subject %}
+          <p class="form-error">{{ form_errors.subject }}</p>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="id_message">Message</label>
+        <textarea id="id_message" name="message" class="form-input" rows="6"
+                  placeholder="Tell me about your project or opportunity...">{{ form_data.message|default('') }}</textarea>
+        {% if form_errors.message %}
+          <p class="form-error">{{ form_errors.message }}</p>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--block">Send Message</button>
+    </form>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ static('js/contact.js') }}"></script>
+{% endblock %}
