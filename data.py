@@ -125,8 +125,8 @@ DEFAULT_EXPERIENCE = [
         "role": "Python Full Stack Developer Intern",
         "company": "IDM TechPark",
         "location": "Coimbatore, Tamil Nadu",
-        "period_start": "Jan 2026",
-        "period_end": "Present",
+        "period_start": "Nov 2025",
+        "period_end": "Jun 2026",
         "description": "Worked as a Python Full Stack Developer Intern developing modern web applications using React.js, Flask and MySQL.",
         "bullet_list": [
             "Developed responsive web applications using React.js, Flask and MySQL.",
