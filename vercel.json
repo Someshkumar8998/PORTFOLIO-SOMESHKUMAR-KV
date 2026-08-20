@@ -1,6 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "app.py": {}
-  }
+    "wsgi.py": {
+      "runtime": "python3.12"
+    }
+  },
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/wsgi.py" }
+  ]
 }
